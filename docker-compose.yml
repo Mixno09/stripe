@@ -43,6 +43,8 @@ services:
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-15}-alpine
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
       # You should definitely change the password in production
@@ -53,7 +55,11 @@ services:
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
-
+  stripe: 
+    image: stripe/stripe-cli
+    environment:
+      STRIPE_API_KEY: sk_test_51Nzjd8GtJnP2HB123GbjxrCv1ie8HxKeiqQdNpeydZeAB67LToMjTQXlXCL7vmocqQXu5gSAhDbuYzBEdBPlw95q00IwLYf6ub
+    entrypoint: ['/bin/stripe', 'listen', '--forward-to=php:80/webhook.php']
 volumes:
   caddy_data:
   caddy_config:

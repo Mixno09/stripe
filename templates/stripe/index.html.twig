@@ -3,18 +3,37 @@
 {% block title %}Hello StripeController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <body>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/app/src/Controller/StripeController.php'|file_link(0) }}">src/Controller/StripeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/app/templates/stripe/index.html.twig'|file_link(0) }}">templates/stripe/index.html.twig</a></code></li>
-    </ul>
-</div>
+                            <label for="checkout-form" class="mb-3">Форма платежа</label>
+                            <form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">
+                                <label for="price">Цена</label>
+                                <input type="number" id="price" class="form-control" name="price" placeholder="Price">
+                                {% if statusSubscribe is null %}
+                                    <label for="subscribe">Оформить подписку</label>
+                                        <select class="form-control" id="subscribe" name="subscribe">
+                                            <option value="0">Без подписки</option>
+                                            <option value="1">Подписаться</option>
+                                        </select>
+                                {% else %}
+                                    <label for="cancel_subscribe">Отменить подписку</label>
+                                    <br>
+                                    <input type="checkbox" id="cancel_subscribe" class="form-check-input" name="cancel_subscribe">
+                                    <input type="hidden" name="sessionId" value="{{ sessionId }}">
+                                {% endif %}
+                                <button id='pay-btn' class="btn btn-success" type="submit" style="margin-top: 20px; width: 100%;padding: 7px;">
+                                    PAY
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
 {% endblock %}
