@@ -99,7 +99,7 @@ class StripeController extends AbstractController
         $checkoutSession = new CheckoutSession();
         $checkoutSession->setSessionId($session->id);
         $checkoutSession->setMode($session->mode);
-        $checkoutSession->setSubStatus($subscription->status);
+        $checkoutSession->setSubStatus($subscription?->status);
         $checkoutSession->setUser($user);
         $entityManager->persist($checkoutSession);
         $entityManager->flush();

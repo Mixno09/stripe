@@ -57,8 +57,12 @@ final readonly class CheckoutSessionService
         ]);
     }
 
-    public function getSubscription(string $subscriptionId): Subscription
+    public function getSubscription(?string $subscriptionId = null): ?Subscription
     {
+        if ($subscriptionId === null) {
+            return null;
+        }
+
         $stripe = new StripeClient($_ENV["STRIPE_SECRET_KEY"]);
 
         return $stripe->subscriptions->retrieve($subscriptionId);
